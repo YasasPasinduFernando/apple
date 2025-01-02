@@ -30,6 +30,9 @@
         <activity android:name=".farmermanagement.FarmerManagementActivity" />
         <!--        View All Farmers-->
         <activity android:name=".farmermanagement.FarmerListActivity" />
+        <!--        Rice Type Activity-->
+        <activity android:name=".RiceTypesActivity" />
+        <activity android:name=".RiceTypeListActivity" />
     </application>
 
 </manifest>
