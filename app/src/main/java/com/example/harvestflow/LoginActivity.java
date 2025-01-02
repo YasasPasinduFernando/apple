@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         // Check if user is Collector
         else if (dbHelper.validateCollector(user, pass)) {
-            navigateToActivity(WelcomeActivity.class, user, "Welcome Collector!");
+            navigateToActivity(CollectorDashboardActivity.class, user, "Welcome Collector!");
         }
         // Invalid login
         else {
