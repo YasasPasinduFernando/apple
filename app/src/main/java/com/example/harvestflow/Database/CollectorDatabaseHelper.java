@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class DatabaseHelper extends SQLiteOpenHelper {
+public class CollectorDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "harvestflow.db";
     private static final int DATABASE_VERSION = 1;
@@ -28,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLLECTOR_USERNAME = "username";
     private static final String COLLECTOR_PASSWORD = "password";
 
-    public DatabaseHelper(Context context) {
+    public CollectorDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

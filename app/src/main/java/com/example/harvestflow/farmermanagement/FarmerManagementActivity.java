@@ -1,4 +1,4 @@
-package com.example.harvestflow;
+package com.example.harvestflow.farmermanagement;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.harvestflow.Database.FarmerDatabaseHelper;
+import com.example.harvestflow.R;
 
 public class FarmerManagementActivity extends AppCompatActivity {
     private FarmerDatabaseHelper dbHelper;

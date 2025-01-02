@@ -27,9 +27,9 @@
         <!-- Welcome Screen for Collectors -->
         <activity android:name=".CollectorDashboardActivity" />
         <!--        Farmer Activity-->
-        <activity android:name=".FarmerManagementActivity" />
+        <activity android:name=".farmermanagement.FarmerManagementActivity" />
         <!--        View All Farmers-->
-        <activity android:name=".FarmerListActivity" />
+        <activity android:name=".farmermanagement.FarmerListActivity" />
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.example.harvestflow;
+package com.example.harvestflow.farmermanagement;
 
 import android.os.Bundle;
 import android.widget.ListView;
@@ -7,6 +7,7 @@ import android.widget.SimpleAdapter;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.harvestflow.Database.FarmerDatabaseHelper;
+import com.example.harvestflow.R;
 
 import java.util.List;
 import java.util.HashMap;

@@ -8,14 +8,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 
-import com.example.harvestflow.Database.DatabaseHelper;
+import com.example.harvestflow.Database.CollectorDatabaseHelper;
 
 import java.util.Random;
 
 
 public class AdminPanelActivity extends AppCompatActivity {
 
-    DatabaseHelper dbHelper;
+    CollectorDatabaseHelper dbHelper;
     private int collectorIndex = 1;
 
     @Override
@@ -23,7 +23,7 @@ public class AdminPanelActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_panel);
 
-        dbHelper = new DatabaseHelper(this);
+        dbHelper = new CollectorDatabaseHelper(this);
 
         EditText name = findViewById(R.id.collectorName);
         EditText nic = findViewById(R.id.collectorNic);
