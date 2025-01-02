@@ -1,0 +1,7 @@
+<resources>
+    <string-array name="farmers">
+        <item>Farmer 1</item>
+        <item>Farmer 2</item>
+        <item>Farmer 3</item>
+    </string-array>
+</resources>

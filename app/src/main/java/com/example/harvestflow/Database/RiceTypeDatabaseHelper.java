@@ -31,6 +31,22 @@ public class RiceTypeDatabaseHelper extends SQLiteOpenHelper {
                 + RICE_TYPE + " TEXT, "
                 + PRICE_PER_KG + " REAL)";
         db.execSQL(CREATE_RICE_TYPES_TABLE);
+
+        // Insert initial data
+        insertSampleData(db);
+    }
+
+    private void insertSampleData(SQLiteDatabase db) {
+        addRiceTypeInternal(db, "Jasmine", "Long Grain", 150.0);
+        addRiceTypeInternal(db, "Basmati", "Premium", 200.0);
+    }
+
+    private void addRiceTypeInternal(SQLiteDatabase db, String name, String type, double price) {
+        ContentValues values = new ContentValues();
+        values.put(RICE_NAME, name);
+        values.put(RICE_TYPE, type);
+        values.put(PRICE_PER_KG, price);
+        db.insert(TABLE_RICE_TYPES, null, values);
     }
 
     @Override
@@ -68,7 +84,6 @@ public class RiceTypeDatabaseHelper extends SQLiteOpenHelper {
         return riceTypes;
     }
 
-    // Optional: Add a method to get formatted strings for display
     public List<String> getAllRiceTypesFormatted() {
         List<String> riceTypes = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -76,9 +91,8 @@ public class RiceTypeDatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                String riceInfo = "Name: " + cursor.getString(cursor.getColumnIndexOrThrow(RICE_NAME)) +
-                        ", Type: " + cursor.getString(cursor.getColumnIndexOrThrow(RICE_TYPE)) +
-                        ", Price/Kg: " + cursor.getDouble(cursor.getColumnIndexOrThrow(PRICE_PER_KG));
+                String riceInfo = cursor.getString(cursor.getColumnIndexOrThrow(RICE_NAME)) +
+                        " (" + cursor.getString(cursor.getColumnIndexOrThrow(RICE_TYPE)) + ")";
                 riceTypes.add(riceInfo);
             } while (cursor.moveToNext());
         }
