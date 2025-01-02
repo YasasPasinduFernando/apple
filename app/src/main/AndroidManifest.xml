@@ -28,6 +28,8 @@
         <activity android:name=".CollectorDashboardActivity" />
         <!--        Farmer Activity-->
         <activity android:name=".FarmerManagementActivity" />
+        <!--        View All Farmers-->
+        <activity android:name=".FarmerListActivity" />
     </application>
 
 </manifest>

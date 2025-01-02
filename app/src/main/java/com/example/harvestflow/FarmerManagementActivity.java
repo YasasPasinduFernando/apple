@@ -1,5 +1,6 @@
 package com.example.harvestflow;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +28,7 @@ public class FarmerManagementActivity extends AppCompatActivity {
         EditText phone = findViewById(R.id.farmerPhone);
         EditText landSize = findViewById(R.id.farmerLandSize);
         Button registerButton = findViewById(R.id.registerFarmerButton);
+        Button viewFarmersButton = findViewById(R.id.viewFarmersButton);
 
         registerButton.setOnClickListener(v -> {
             if (validateInputs(name, nic, location, age, email, phone, landSize)) {
@@ -46,6 +48,12 @@ public class FarmerManagementActivity extends AppCompatActivity {
                     Toast.makeText(this, "Failed to Add Farmer", Toast.LENGTH_SHORT).show();
                 }
             }
+        });
+
+        viewFarmersButton.setOnClickListener(v -> {
+            Intent intent = new Intent(FarmerManagementActivity.this, FarmerListActivity.class);
+            intent.putExtra("collector_id", collectorId);
+            startActivity(intent);
         });
     }
 

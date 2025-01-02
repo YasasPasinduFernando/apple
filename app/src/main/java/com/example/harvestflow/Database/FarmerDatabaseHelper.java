@@ -2,8 +2,13 @@ package com.example.harvestflow.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class FarmerDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "farmer_db.db";
@@ -61,5 +66,22 @@ public class FarmerDatabaseHelper extends SQLiteOpenHelper {
 
         long result = db.insert(TABLE_FARMERS, null, values);
         return result != -1;
+    }
+    public List<HashMap<String, String>> getAllFarmers() {
+        List<HashMap<String, String>> farmerList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_FARMERS, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                HashMap<String, String> farmer = new HashMap<>();
+                farmer.put(FARMER_ID, cursor.getString(cursor.getColumnIndexOrThrow(FARMER_ID)));
+                farmer.put(FARMER_NAME, cursor.getString(cursor.getColumnIndexOrThrow(FARMER_NAME)));
+                farmer.put(FARMER_LOCATION, cursor.getString(cursor.getColumnIndexOrThrow(FARMER_LOCATION)));
+                farmerList.add(farmer);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return farmerList;
     }
 }
