@@ -1,14 +1,13 @@
-package com.example.harvestflow;
+package com.example.harvestflow.ricetypemanagement;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.harvestflow.Database.RiceTypeDatabaseHelper;
-import java.util.ArrayList;
+import com.example.harvestflow.R;
 
 public class RiceTypesActivity extends AppCompatActivity {
     private RiceTypeDatabaseHelper dbHelper;

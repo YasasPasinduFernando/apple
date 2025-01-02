@@ -1,36 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
-    <LinearLayout
+    android:background="@color/backgroundColor">
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <EditText
-            android:id="@+id/riceName"
+        android:layout_height="match_parent">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Rice Name" />
-        <EditText
-            android:id="@+id/riceType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Rice Type (Red/White)" />
-        <EditText
-            android:id="@+id/pricePerKg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Price per Kg" />
-        <Button
-            android:id="@+id/saveRiceTypeButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Save" />
-        <Button
-            android:id="@+id/viewRiceTypesButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="View Rice Types" />
-    </LinearLayout>
-</ScrollView>
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:startIconDrawable="@drawable/ic_rice"
+                app:startIconTint="@color/primaryGreen"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <EditText
+                    android:id="@+id/riceName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Rice Name"
+                    android:inputType="textCapWords"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:startIconDrawable="@drawable/ic_category"
+                app:startIconTint="@color/primaryGreen"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <EditText
+                    android:id="@+id/riceType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Rice Type (Red/White)"
+                    android:inputType="textCapWords"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:startIconDrawable="@drawable/ic_price"
+                app:startIconTint="@color/primaryGreen"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <EditText
+                    android:id="@+id/pricePerKg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Price per Kg"
+                    android:inputType="numberDecimal"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/saveRiceTypeButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="Save Rice Type"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:cornerRadius="8dp"
+                android:backgroundTint="@color/primaryGreen"
+                android:layout_marginBottom="16dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/viewRiceTypesButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="View Rice Types"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:cornerRadius="8dp"
+                android:backgroundTint="@color/primaryGreen"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

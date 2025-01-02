@@ -1,10 +1,12 @@
-package com.example.harvestflow;
+package com.example.harvestflow.ricetypemanagement;
 
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.harvestflow.Database.RiceTypeDatabaseHelper;
+import com.example.harvestflow.R;
+
 import java.util.List;
 
 public class RiceTypeListActivity extends AppCompatActivity {

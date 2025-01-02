@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
 import com.example.harvestflow.farmermanagement.FarmerManagementActivity;
+import com.example.harvestflow.ricetypemanagement.RiceTypesActivity;
 
 public class CollectorDashboardActivity extends AppCompatActivity {
     private String username;

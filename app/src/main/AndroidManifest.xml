@@ -31,8 +31,8 @@
         <!--        View All Farmers-->
         <activity android:name=".farmermanagement.FarmerListActivity" />
         <!--        Rice Type Activity-->
-        <activity android:name=".RiceTypesActivity" />
-        <activity android:name=".RiceTypeListActivity" />
+        <activity android:name=".ricetypemanagement.RiceTypesActivity" />
+        <activity android:name=".ricetypemanagement.RiceTypeListActivity" />
     </application>
 
 </manifest>
