@@ -1,4 +1,4 @@
-package com.example.harvestflow;
+package com.example.harvestflow.Database;
 
 import android.content.ContentValues;
 import android.content.Context;

@@ -9,6 +9,7 @@ import androidx.cardview.widget.CardView;
 
 public class CollectorDashboardActivity extends AppCompatActivity {
     private String username;
+    private String collectorId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +18,7 @@ public class CollectorDashboardActivity extends AppCompatActivity {
 
         // Get username from intent (keeping your existing implementation)
         username = getIntent().getStringExtra("username");
+        collectorId = getIntent().getStringExtra("id");
 
         // Setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -37,6 +39,7 @@ public class CollectorDashboardActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(CollectorDashboardActivity.this, FarmerManagementActivity.class);
                 intent.putExtra("username", username);
+                intent.putExtra("collector_id", collectorId);
                 startActivity(intent);
             }
         });
