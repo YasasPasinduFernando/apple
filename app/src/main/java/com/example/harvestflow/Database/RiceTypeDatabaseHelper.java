@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class RiceTypeDatabaseHelper extends SQLiteOpenHelper {
@@ -48,7 +49,27 @@ public class RiceTypeDatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    public List<String> getAllRiceTypes() {
+    public List<HashMap<String, String>> getAllRiceTypes() {
+        List<HashMap<String, String>> riceTypes = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_RICE_TYPES, null, null, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                HashMap<String, String> riceType = new HashMap<>();
+                riceType.put("id", cursor.getString(cursor.getColumnIndexOrThrow(RICE_ID)));
+                riceType.put("name", cursor.getString(cursor.getColumnIndexOrThrow(RICE_NAME)));
+                riceType.put("type", cursor.getString(cursor.getColumnIndexOrThrow(RICE_TYPE)));
+                riceType.put("price_per_kg", String.valueOf(cursor.getDouble(cursor.getColumnIndexOrThrow(PRICE_PER_KG))));
+                riceTypes.add(riceType);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return riceTypes;
+    }
+
+    // Optional: Add a method to get formatted strings for display
+    public List<String> getAllRiceTypesFormatted() {
         List<String> riceTypes = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_RICE_TYPES, null, null, null, null, null, null);

@@ -33,6 +33,8 @@
         <!--        Rice Type Activity-->
         <activity android:name=".ricetypemanagement.RiceTypesActivity" />
         <activity android:name=".ricetypemanagement.RiceTypeListActivity" />
+        <!--        Quantity Activity-->
+        <activity android:name=".QuantitiesActivity" />
     </application>
 
 </manifest>
