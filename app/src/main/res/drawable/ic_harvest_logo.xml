@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="240dp"
+    android:height="240dp"
+    android:viewportWidth="240"
+    android:viewportHeight="240">
+
+    <!-- Background Circle -->
+    <path
+        android:fillColor="#4CAF50"
+        android:fillAlpha="0.1"
+        android:pathData="M120,120m-110,0a110,110 0,1 1,220 0a110,110 0,1 1,-220 0"/>
+
+    <!-- Rice Plant Group 1 -->
+    <group android:translateX="90" android:translateY="70">
+        <!-- Stem -->
+        <path
+            android:strokeColor="#4CAF50"
+            android:strokeWidth="3"
+            android:strokeLineCap="round"
+            android:pathData="M30,120 L30,70"/>
+        <!-- Rice Grains -->
+        <path
+            android:strokeColor="#4CAF50"
+            android:strokeWidth="3"
+            android:strokeLineCap="round"
+            android:pathData="M30,70 C40,60 20,50 30,40 C40,30 20,20 30,10"/>
+        <!-- Leaves -->
+        <path
+            android:strokeColor="#4CAF50"
+            android:strokeWidth="2"
+            android:strokeLineCap="round"
+            android:pathData="M30,90 C50,80 40,70 60,60"/>
+        <path
+            android:strokeColor="#4CAF50"
+            android:strokeWidth="2"
+            android:strokeLineCap="round"
+            android:pathData="M30,80 C10,70 20,60 0,50"/>
+    </group>
+
+    <!-- Rice Plant Group 2 -->
+    <group android:translateX="120" android:translateY="60">
+        <!-- Stem -->
+        <path
+            android:strokeColor="#4CAF50"
+            android:strokeWidth="3"
+            android:strokeLineCap="round"
+            android:pathData="M30,120 L30,70"/>
+        <!-- Rice Grains -->
+        <path
+            android:strokeColor="#4CAF50"
+            android:strokeWidth="3"
+            android:strokeLineCap="round"
+            android:pathData="M30,70 C40,60 20,50 30,40 C40,30 20,20 30,10"/>
+        <!-- Leaves -->
+        <path
+            android:strokeColor="#4CAF50"
+            android:strokeWidth="2"
+            android:strokeLineCap="round"
+            android:pathData="M30,90 C50,80 40,70 60,60"/>
+        <path
+            android:strokeColor="#4CAF50"
+            android:strokeWidth="2"
+            android:strokeLineCap="round"
+            android:pathData="M30,80 C10,70 20,60 0,50"/>
+    </group>
+
+    <!-- Field Lines -->
+    <path
+        android:strokeColor="#4CAF50"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M40,160 C80,150 160,150 200,160"/>
+    <path
+        android:strokeColor="#4CAF50"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M50,170 C90,160 150,160 190,170"/>
+    <path
+        android:strokeColor="#4CAF50"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M60,180 C100,170 140,170 180,180"/>
+
+    <!-- Sun -->
+    <path
+        android:fillColor="#FFC107"
+        android:fillAlpha="0.8"
+        android:pathData="M190,50m-20,0a20,20 0,1 1,40 0a20,20 0,1 1,-40 0"/>
+</vector>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Original colors -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Primary theme colors -->
+    <color name="primaryGreen">#2E7D32</color>
+    <color name="primaryGreenDark">#1B5E20</color>
+    <color name="primaryGreenLight">#4CAF50</color>
+
+    <!-- Background colors -->
+    <color name="backgroundColor">#F1F8E9</color>
+    <color name="surfaceColor">#FFFFFF</color>
+    <color name="cardBackground">#FFFFFF</color>
+
+    <!-- Text colors -->
+    <color name="textPrimary">#1B5E20</color>
+    <color name="textSecondary">#558B2F</color>
+    <color name="textHint">#81C784</color>
+
+    <!-- Accent colors -->
+    <color name="accentYellow">#FFB300</color>  <!-- For warning or highlight -->
+    <color name="accentBrown">#795548</color>   <!-- For earth/soil themed elements -->
+
+    <!-- Status colors -->
+    <color name="success">#43A047</color>
+    <color name="error">#E53935</color>
+    <color name="warning">#FFB300</color>
+</resources>
