@@ -1,19 +1,20 @@
 package com.example.harvestflow.ricetypemanagement;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.harvestflow.Database.RiceTypeDatabaseHelper;
 import com.example.harvestflow.R;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,6 +26,10 @@ public class RiceTypeListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rice_type_list);
+
+        // Initialize back button and set the listener
+        ImageButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish()); // Closes the current activity
 
         riceTypeListView = findViewById(R.id.riceTypeListView);
         dbHelper = new RiceTypeDatabaseHelper(this);
@@ -43,8 +48,7 @@ public class RiceTypeListActivity extends AppCompatActivity {
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             if (convertView == null) {
-                convertView = LayoutInflater.from(getContext())
-                        .inflate(R.layout.rice_type_list_item, parent, false);
+                convertView = getLayoutInflater().inflate(R.layout.rice_type_list_item, parent, false);
             }
 
             HashMap<String, String> riceType = getItem(position);

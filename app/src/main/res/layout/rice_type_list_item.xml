@@ -3,26 +3,37 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="8dp">
 
+    <!-- Rice Name -->
     <TextView
         android:id="@+id/riceNameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#2E7D32"
+        android:ellipsize="end"
+        android:maxLines="1" />
 
+    <!-- Rice Type -->
     <TextView
         android:id="@+id/riceTypeTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp" />
+        android:layout_marginTop="4dp"
+        android:textSize="14sp"
+        android:textColor="#757575"
+        android:ellipsize="end"
+        android:maxLines="1" />
 
+    <!-- Rice Price -->
     <TextView
         android:id="@+id/ricePriceTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:textSize="14sp"
+        android:textStyle="bold"
         android:textColor="#4CAF50" />
-
 </LinearLayout>
