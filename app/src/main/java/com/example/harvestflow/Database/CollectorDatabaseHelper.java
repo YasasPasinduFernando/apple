@@ -99,5 +99,17 @@ public class CollectorDatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return isValid;
     }
+    //greeting
+    public String getCollectorName(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT " + COLLECTOR_NAME + " FROM " + TABLE_COLLECTORS +
+                " WHERE " + COLLECTOR_USERNAME + " = ?", new String[]{username});
+        String name = "";
+        if (cursor.moveToFirst()) {
+            name = cursor.getString(cursor.getColumnIndex(COLLECTOR_NAME));
+        }
+        cursor.close();
+        return name;
+    }
 }
 

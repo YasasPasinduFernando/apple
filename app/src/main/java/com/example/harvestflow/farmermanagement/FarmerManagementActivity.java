@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.harvestflow.Database.FarmerDatabaseHelper;
@@ -12,11 +13,12 @@ import com.example.harvestflow.R;
 public class FarmerManagementActivity extends AppCompatActivity {
     private FarmerDatabaseHelper dbHelper;
     private int collectorId;
-
+    //Create new farmer and retrieve the farmer list
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_farmer_management);
+        setupBackButton();
 
         dbHelper = new FarmerDatabaseHelper(this);
         collectorId = getIntent().getIntExtra("collector_id", -1);
@@ -57,7 +59,7 @@ public class FarmerManagementActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
-
+    //Handling validation
     private boolean validateInputs(EditText name, EditText nic, EditText location,
                                    EditText age, EditText email, EditText phone, EditText landSize) {
         boolean isValid = true;
@@ -133,5 +135,9 @@ public class FarmerManagementActivity extends AppCompatActivity {
         for (EditText field : fields) {
             field.setText("");
         }
+    }
+    private void setupBackButton() {
+        ImageButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> onBackPressed());
     }
 }

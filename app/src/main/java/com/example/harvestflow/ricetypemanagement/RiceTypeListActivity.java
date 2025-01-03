@@ -21,7 +21,7 @@ import java.util.List;
 public class RiceTypeListActivity extends AppCompatActivity {
     private RiceTypeDatabaseHelper dbHelper;
     private ListView riceTypeListView;
-
+    //Add rice type
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +38,8 @@ public class RiceTypeListActivity extends AppCompatActivity {
         RiceTypeAdapter adapter = new RiceTypeAdapter(riceTypes);
         riceTypeListView.setAdapter(adapter);
     }
-
+    //todo: please add the suitable comment via chatgpt prompt
+    /*comment*/
     private class RiceTypeAdapter extends ArrayAdapter<HashMap<String, String>> {
         public RiceTypeAdapter(List<HashMap<String, String>> riceTypes) {
             super(RiceTypeListActivity.this, R.layout.rice_type_list_item, riceTypes);

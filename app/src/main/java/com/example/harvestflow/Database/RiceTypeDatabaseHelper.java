@@ -35,7 +35,7 @@ public class RiceTypeDatabaseHelper extends SQLiteOpenHelper {
         // Insert initial data
         insertSampleData(db);
     }
-
+    //Sample data for testing purpose
     private void insertSampleData(SQLiteDatabase db) {
         addRiceTypeInternal(db, "Jasmine", "Long Grain", 150.0);
         addRiceTypeInternal(db, "Basmati", "Premium", 200.0);

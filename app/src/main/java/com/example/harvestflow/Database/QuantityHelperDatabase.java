@@ -72,7 +72,7 @@ public class QuantityHelperDatabase extends SQLiteOpenHelper {
             Log.e("Database", "Error creating tables: " + e.getMessage());
         }
     }
-
+    //Sample data to populate tables in my reports section
     private void insertSampleData(SQLiteDatabase db) {
         // Insert sample farmers
         ContentValues farmerValues = new ContentValues();

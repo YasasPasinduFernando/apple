@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <vector android:width="24dp"
+            android:height="24dp"
+            android:viewportWidth="200"
+            android:viewportHeight="100">
+            <!-- Arrow -->
+            <path
+                android:strokeColor="#236B42"
+                android:strokeWidth="8"
+                android:pathData="M110,50L170,50L160,40M170,50L160,60"/>
+            <!-- Rice sack -->
+            <path
+                android:fillColor="#A69072"
+                android:pathData="M175,30Q190,30,190,50Q190,70,175,70Q160,70,160,50Q160,30,175,30"/>
+            <path
+                android:strokeColor="#6E5A44"
+                android:strokeWidth="2"
+                android:pathData="M170,40L180,40M170,50L180,50M170,60L180,60"/>
+        </vector>
+    </item>
+    <item>
+        <vector android:width="24dp"
+            android:height="24dp"
+            android:viewportWidth="200"
+            android:viewportHeight="100">
+            <!-- Arrow -->
+            <path
+                android:strokeColor="#2E8B57"
+                android:strokeWidth="8"
+                android:pathData="M110,50L170,50L160,40M170,50L160,60"/>
+            <!-- Rice sack -->
+            <path
+                android:fillColor="#D2B48C"
+                android:pathData="M175,30Q190,30,190,50Q190,70,175,70Q160,70,160,50Q160,30,175,30"/>
+            <path
+                android:strokeColor="#8B7355"
+                android:strokeWidth="2"
+                android:pathData="M170,40L180,40M170,50L180,50M170,60L180,60"/>
+        </vector>
+    </item>
+</selector>

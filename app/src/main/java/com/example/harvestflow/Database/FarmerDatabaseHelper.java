@@ -42,7 +42,7 @@ public class FarmerDatabaseHelper extends SQLiteOpenHelper {
                 + FARMER_LAND_SIZE + " REAL)";
         db.execSQL(CREATE_FARMERS_TABLE);
 
-        // Insert initial data
+        // Insert initial data for testing purposes
         insertSampleData(db);
     }
 
@@ -109,7 +109,7 @@ public class FarmerDatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return farmerList;
     }
-
+    //Retrieve data to the farmer list
     public List<String> getAllFarmersFormatted() {
         List<String> farmers = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -48,6 +49,7 @@ public class QuantitiesActivity extends Activity {
 
         loadFarmersIntoSpinner();
         loadRiceTypesIntoSpinner();
+        setupBackButton();
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,5 +121,9 @@ public class QuantitiesActivity extends Activity {
         otherDeductionsInput.setText("");
         farmerSpinner.setSelection(0);
         riceTypeSpinner.setSelection(0);
+    }
+    private void setupBackButton() {
+        ImageButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> onBackPressed());
     }
 }
