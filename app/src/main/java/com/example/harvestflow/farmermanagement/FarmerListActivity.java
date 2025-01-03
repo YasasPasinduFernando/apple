@@ -1,16 +1,14 @@
 package com.example.harvestflow.farmermanagement;
 
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.harvestflow.Database.FarmerDatabaseHelper;
 import com.example.harvestflow.R;
-
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 
 public class FarmerListActivity extends AppCompatActivity {
 
@@ -20,6 +18,10 @@ public class FarmerListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_farmer_list);
 
         ListView farmerListView = findViewById(R.id.farmerListView);
+        ImageButton backButton = findViewById(R.id.backButton);
+
+        // Set up the back button functionality
+        backButton.setOnClickListener(v -> onBackPressed());
 
         // Initialize the database helper and get all farmers
         FarmerDatabaseHelper dbHelper = new FarmerDatabaseHelper(this);
