@@ -9,8 +9,8 @@ import android.util.Log;
 
 public class QuantityHelperDatabase extends SQLiteOpenHelper {
     private static final String TAG = "QuantityHelperDatabase";
-    private static final String DATABASE_NAME = "harvest_flow.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final String DATABASE_NAME = "quantitiy.db";
+    private static final int DATABASE_VERSION = 1;
 
     // Tables
     private static final String TABLE_QUANTITIES = "quantities";

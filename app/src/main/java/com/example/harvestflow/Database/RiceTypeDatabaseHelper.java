@@ -5,15 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class RiceTypeDatabaseHelper extends SQLiteOpenHelper {
-    private static final String TAG = "RiceTypeDatabaseHelper";
-    private static final String DATABASE_NAME = "harvest_db.db";
-    private static final int DATABASE_VERSION = 2;  // Match version with other helpers
+    private static final String DATABASE_NAME = "ricetype_db.db";
+    private static final int DATABASE_VERSION = 1;
 
     private static final String TABLE_RICE_TYPES = "rice_types";
     private static final String RICE_ID = "id";
@@ -27,39 +25,20 @@ public class RiceTypeDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        createRiceTypesTable(db);
+        String CREATE_RICE_TYPES_TABLE = "CREATE TABLE " + TABLE_RICE_TYPES + "("
+                + RICE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + RICE_NAME + " TEXT, "
+                + RICE_TYPE + " TEXT, "
+                + PRICE_PER_KG + " REAL)";
+        db.execSQL(CREATE_RICE_TYPES_TABLE);
+
+        // Insert initial data
         insertSampleData(db);
     }
-
-    private void createRiceTypesTable(SQLiteDatabase db) {
-        try {
-            String CREATE_RICE_TYPES_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_RICE_TYPES + "("
-                    + RICE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + RICE_NAME + " TEXT, "
-                    + RICE_TYPE + " TEXT, "
-                    + PRICE_PER_KG + " REAL)";
-            db.execSQL(CREATE_RICE_TYPES_TABLE);
-            Log.d(TAG, "Rice types table created successfully");
-        } catch (Exception e) {
-            Log.e(TAG, "Error creating rice types table: " + e.getMessage());
-        }
-    }
-
+    //Sample data for testing purpose
     private void insertSampleData(SQLiteDatabase db) {
-        try {
-            // Check if table is empty before inserting sample data
-            Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_RICE_TYPES, null);
-            cursor.moveToFirst();
-            int count = cursor.getInt(0);
-            cursor.close();
-
-            if (count == 0) {
-                addRiceTypeInternal(db, "Jasmine", "Long Grain", 150.0);
-                addRiceTypeInternal(db, "Basmati", "Premium", 200.0);
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Error inserting sample data: " + e.getMessage());
-        }
+        addRiceTypeInternal(db, "Jasmine", "Long Grain", 150.0);
+        addRiceTypeInternal(db, "Basmati", "Premium", 200.0);
     }
 
     private void addRiceTypeInternal(SQLiteDatabase db, String name, String type, double price) {
@@ -72,15 +51,8 @@ public class RiceTypeDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        try {
-            Log.d(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion);
-            // Only drop and recreate the rice_types table
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_RICE_TYPES);
-            createRiceTypesTable(db);
-            insertSampleData(db);
-        } catch (Exception e) {
-            Log.e(TAG, "Error upgrading database: " + e.getMessage());
-        }
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RICE_TYPES);
+        onCreate(db);
     }
 
     public boolean addRiceType(String name, String type, double pricePerKg) {

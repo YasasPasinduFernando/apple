@@ -18,27 +18,31 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
 
-            <!-- Center Title -->
-            <TextView
-                android:id="@+id/toolbarTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Register Collector"
-                android:textColor="@color/primaryGreen"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <!-- Logout Button on the Right -->
-            <ImageButton
-                android:id="@+id/logoutButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="end"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Logout"
-                android:src="@drawable/ic_logout"
-                app:tint="@color/primaryGreen" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Register Collector"
+                    android:textColor="@color/primaryGreen"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+                <ImageButton
+                    android:id="@+id/backButton"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Back"
+                    android:src="@drawable/ic_logout"
+                    app:tint="@color/primaryGreen"/>
+
+            </RelativeLayout>
 
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>

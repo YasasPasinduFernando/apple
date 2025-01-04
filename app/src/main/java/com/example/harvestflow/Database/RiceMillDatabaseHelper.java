@@ -13,7 +13,7 @@ import java.util.List;
 
 public class RiceMillDatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "RiceMillDatabaseHelper";
-    private static final String DATABASE_NAME = "harvest_db.db";
+    private static final String DATABASE_NAME = "ricemills_db.db";
     private static final int DATABASE_VERSION = 2;
 
     // Table and column names
@@ -30,21 +30,17 @@ public class RiceMillDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        createRiceMillsTable(db);
-    }
-
-    private void createRiceMillsTable(SQLiteDatabase db) {
         try {
-            String CREATE_RICE_MILLS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_RICE_MILLS + "("
+            String CREATE_RICE_MILLS_TABLE = "CREATE TABLE " + TABLE_RICE_MILLS + "("
                     + MILL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + MILL_NAME + " TEXT NOT NULL, "
                     + MILL_LOCATION + " TEXT NOT NULL, "
                     + OWNER_CONTACT + " TEXT NOT NULL, "
                     + BUSINESS_REG_ID + " TEXT NOT NULL UNIQUE)";
             db.execSQL(CREATE_RICE_MILLS_TABLE);
-            Log.d(TAG, "Rice mills table created successfully");
+            Log.d(TAG, "Database tables created successfully");
         } catch (Exception e) {
-            Log.e(TAG, "Error creating rice mills table: " + e.getMessage());
+            Log.e(TAG, "Error creating database tables: " + e.getMessage());
         }
     }
 
@@ -52,9 +48,8 @@ public class RiceMillDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         try {
             Log.d(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion);
-            // Only drop and recreate the rice_mills table
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_RICE_MILLS);
-            createRiceMillsTable(db);
+            onCreate(db);
         } catch (Exception e) {
             Log.e(TAG, "Error upgrading database: " + e.getMessage());
         }
