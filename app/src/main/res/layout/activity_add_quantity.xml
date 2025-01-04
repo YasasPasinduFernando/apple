@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Add Quantity"
+                android:text="Paddy Collection"
                 android:textColor="@color/primaryGreen"
                 android:textSize="20sp"
                 android:textStyle="bold"/>
@@ -79,7 +79,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
 
                 <Spinner
                     android:id="@+id/farmer_spinner"
@@ -116,7 +117,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
 
                 <Spinner
                     android:id="@+id/rice_type_spinner"
@@ -125,7 +127,38 @@
                     android:hint="Select Rice Type" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Other Inputs -->
+            <!-- Total Weight Input -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:startIconDrawable="@drawable/ic_weight"
+                app:startIconTint="@color/primaryGreen">
+
+                <EditText
+                    android:id="@+id/total_weight_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Total Weight (kg)"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Net Weight Display -->
+            <TextView
+                android:id="@+id/net_weight_display"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="Net Weight: 0.00 kg"
+                android:textAlignment="center"
+                android:textColor="@color/primaryGreen"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:background="@drawable/rounded_border_background"
+                android:padding="12dp"/>
+
+            <!-- Other Weight Inputs -->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"

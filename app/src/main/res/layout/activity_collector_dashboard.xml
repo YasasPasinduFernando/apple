@@ -155,7 +155,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Quantities"
+                    android:text="Paddy Collection"
                     android:textStyle="bold"
                     android:textColor="#333333" />
             </LinearLayout>

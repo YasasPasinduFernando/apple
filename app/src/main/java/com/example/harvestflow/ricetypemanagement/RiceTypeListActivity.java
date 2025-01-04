@@ -38,8 +38,7 @@ public class RiceTypeListActivity extends AppCompatActivity {
         RiceTypeAdapter adapter = new RiceTypeAdapter(riceTypes);
         riceTypeListView.setAdapter(adapter);
     }
-    //todo: please add the suitable comment via chatgpt prompt
-    /*comment*/
+    /*Adapter is a*/
     private class RiceTypeAdapter extends ArrayAdapter<HashMap<String, String>> {
         public RiceTypeAdapter(List<HashMap<String, String>> riceTypes) {
             super(RiceTypeListActivity.this, R.layout.rice_type_list_item, riceTypes);

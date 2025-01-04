@@ -43,11 +43,6 @@ public class RiceMillListActivity extends AppCompatActivity implements RiceMillA
         ImageButton backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> onBackPressed());
 
-        FloatingActionButton fabAdd = findViewById(R.id.fabAdd);
-        fabAdd.setOnClickListener(v -> {
-            Intent intent = new Intent(RiceMillListActivity.this, RiceMillManagementActivity.class);
-            startActivity(intent);
-        });
     }
 
     @Override
