@@ -18,27 +18,23 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
 
-            <!-- Center Title -->
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Back"
+                android:src="@drawable/ic_baseline_arrow_back_24"
+                app:tint="@color/primaryGreen"/>
+
             <TextView
-                android:id="@+id/toolbarTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Register Collector"
+                android:text="Register Farmer"
                 android:textColor="@color/primaryGreen"
                 android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <!-- Logout Button on the Right -->
-            <ImageButton
-                android:id="@+id/logoutButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="end"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Logout"
-                android:src="@drawable/ic_logout"
-                app:tint="@color/primaryGreen" />
+                android:textStyle="bold"/>
 
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
@@ -64,10 +60,11 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                 <EditText
-                    android:id="@+id/collectorName"
+                    android:id="@+id/farmerName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Collector Name"/>
+                    android:hint="Farmer Name"
+                    android:inputType="textPersonName"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -79,10 +76,11 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                 <EditText
-                    android:id="@+id/collectorNic"
+                    android:id="@+id/farmerNic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="NIC Number"/>
+                    android:hint="NIC Number"
+                    android:inputType="textCapCharacters"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -94,10 +92,11 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                 <EditText
-                    android:id="@+id/collectorLocation"
+                    android:id="@+id/farmerLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Location"/>
+                    android:hint="Location"
+                    android:inputType="textPostalAddress"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -109,7 +108,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                 <EditText
-                    android:id="@+id/collectorAge"
+                    android:id="@+id/farmerAge"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Age"
@@ -125,7 +124,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                 <EditText
-                    android:id="@+id/collectorEmail"
+                    android:id="@+id/farmerEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Email"
@@ -135,24 +134,51 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="16dp"
                 app:startIconDrawable="@drawable/ic_phone"
                 app:startIconTint="@color/primaryGreen"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                 <EditText
-                    android:id="@+id/collectorPhone"
+                    android:id="@+id/farmerPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Phone"
+                    android:hint="Phone Number"
                     android:inputType="phone"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:startIconDrawable="@drawable/ic_land"
+                app:startIconTint="@color/primaryGreen"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <EditText
+                    android:id="@+id/farmerLandSize"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Land Size (Acres)"
+                    android:inputType="numberDecimal"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/registerCollectorButton"
+                android:id="@+id/registerFarmerButton"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:text="Register Collector"
+                android:text="Register Farmer"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:cornerRadius="8dp"
+                android:backgroundTint="@color/primaryGreen"
+                android:layout_marginBottom="16dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/viewFarmersButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="View All Farmers"
                 android:textAllCaps="false"
                 android:textSize="16sp"
                 app:cornerRadius="8dp"

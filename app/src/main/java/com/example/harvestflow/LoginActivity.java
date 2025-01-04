@@ -7,17 +7,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+
+import com.example.harvestflow.Database.CollectorDatabaseHelper;
+
 import java.util.Calendar;
 
 public class LoginActivity extends AppCompatActivity {
 
-    DatabaseHelper dbHelper;
+    CollectorDatabaseHelper dbHelper;
     private EditText username, password;
     private TextView greetingText;
     private Button loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -27,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
-        dbHelper = new DatabaseHelper(this);
+        dbHelper = new CollectorDatabaseHelper(this);
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         loginButton = findViewById(R.id.loginButton);
@@ -88,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         // Check if user is Collector
         else if (dbHelper.validateCollector(user, pass)) {
-            navigateToActivity(WelcomeActivity.class, user, "Welcome Collector!");
+            navigateToActivity(CollectorDashboardActivity.class, user, "Welcome Collector!");
         }
         // Invalid login
         else {

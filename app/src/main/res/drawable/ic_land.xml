@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Grid field lines -->
+    <path
+        android:fillColor="@android:color/black"
+        android:pathData="M3 3v18h18V3H3zm16 16H5V5h14v14z"/>
+
+    <!-- Measurement arrows -->
+    <path
+        android:strokeColor="@android:color/black"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M7 13l2 2m6-6l2 2M7 7l10 10"/>
+
+    <!-- Corner measurement indicators -->
+    <path
+        android:fillColor="@android:color/black"
+        android:pathData="M6 6h3v1H6zM6 17h3v1H6zM15 6h3v1h-3zM15 17h3v1h-3z"/>
+</vector>

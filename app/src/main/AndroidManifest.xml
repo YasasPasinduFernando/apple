@@ -25,7 +25,22 @@
         <activity android:name=".AdminPanelActivity" />
 
         <!-- Welcome Screen for Collectors -->
-        <activity android:name=".WelcomeActivity" />
+        <activity android:name=".CollectorDashboardActivity" />
+        <!-- Farmer Activity-->
+        <activity android:name=".farmermanagement.FarmerManagementActivity" />
+        <activity android:name=".farmermanagement.FarmerListActivity" />
+        <!-- Rice Type Activity-->
+        <activity android:name=".ricetypemanagement.RiceTypesActivity" />
+        <activity android:name=".ricetypemanagement.RiceTypeListActivity" />
+        <!-- Quantity Activity-->
+        <activity android:name=".QuantitiesActivity" />
+        <!-- Reports Activity-->
+        <activity android:name=".ReportsActivity" />
+        <!-- Mill Activity-->
+        <activity android:name=".millmanagement.RiceMillManagementActivity" />
+        <activity android:name=".millmanagement.SendToMillsActivity" />
+        <activity android:name=".millmanagement.RiceMillListActivity" />
+
     </application>
 
 </manifest>

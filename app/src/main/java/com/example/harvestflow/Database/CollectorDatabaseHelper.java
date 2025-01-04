@@ -1,4 +1,4 @@
-package com.example.harvestflow;
+package com.example.harvestflow.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class DatabaseHelper extends SQLiteOpenHelper {
+public class CollectorDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "harvestflow.db";
     private static final int DATABASE_VERSION = 1;
@@ -28,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLLECTOR_USERNAME = "username";
     private static final String COLLECTOR_PASSWORD = "password";
 
-    public DatabaseHelper(Context context) {
+    public CollectorDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -98,6 +98,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         boolean isValid = cursor.getCount() > 0;
         cursor.close();
         return isValid;
+    }
+    //greeting
+    public String getCollectorName(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT " + COLLECTOR_NAME + " FROM " + TABLE_COLLECTORS +
+                " WHERE " + COLLECTOR_USERNAME + " = ?", new String[]{username});
+        String name = "";
+        if (cursor.moveToFirst()) {
+            name = cursor.getString(cursor.getColumnIndex(COLLECTOR_NAME));
+        }
+        cursor.close();
+        return name;
     }
 }
 

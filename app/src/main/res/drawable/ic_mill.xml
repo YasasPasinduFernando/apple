@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <vector android:width="24dp"
+            android:height="24dp"
+            android:viewportWidth="200"
+            android:viewportHeight="100">
+            <!-- Rice Mill Building -->
+            <path
+                android:fillColor="#5D5448"
+                android:pathData="M10,30h80v60h-80z"/>
+            <path
+                android:fillColor="#6E5A44"
+                android:pathData="M5,30L50,10L95,30"/>
+            <!-- Door -->
+            <path
+                android:fillColor="#3A3A3A"
+                android:pathData="M35,60h30v30h-30z"/>
+            <!-- Windows -->
+            <path
+                android:fillColor="#84ABC9"
+                android:pathData="M20,40h15v15h-15z"/>
+            <path
+                android:fillColor="#84ABC9"
+                android:pathData="M65,40h15v15h-15z"/>
+            <!-- Rice symbol -->
+            <path
+                android:fillColor="#E6E6CD"
+                android:pathData="M45,17a5,8 0 1,0 10,0a5,8 0 1,0 -10,0"/>
+        </vector>
+    </item>
+    <item>
+        <vector android:width="24dp"
+            android:height="24dp"
+            android:viewportWidth="200"
+            android:viewportHeight="100">
+            <!-- Rice Mill Building -->
+            <path
+                android:fillColor="#786D5F"
+                android:pathData="M10,30h80v60h-80z"/>
+            <path
+                android:fillColor="#8B7355"
+                android:pathData="M5,30L50,10L95,30"/>
+            <!-- Door -->
+            <path
+                android:fillColor="#4A4A4A"
+                android:pathData="M35,60h30v30h-30z"/>
+            <!-- Windows -->
+            <path
+                android:fillColor="#A5D5E7"
+                android:pathData="M20,40h15v15h-15z"/>
+            <path
+                android:fillColor="#A5D5E7"
+                android:pathData="M65,40h15v15h-15z"/>
+            <!-- Rice symbol -->
+            <path
+                android:fillColor="#F5F5DC"
+                android:pathData="M45,17a5,8 0 1,0 10,0a5,8 0 1,0 -10,0"/>
+        </vector>
+    </item>
+</selector>

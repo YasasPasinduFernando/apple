@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <vector xmlns:android="http://schemas.android.com/apk/res/android"
+            android:width="24dp"
+            android:height="24dp"
+            android:viewportWidth="24"
+            android:viewportHeight="24">
+            <!-- Farmer Hat -->
+            <path
+                android:fillColor="#8B4513"
+                android:pathData="M12,2C8,2 5,3 5,5c7,0 7,0 14,0c0,-2 -3,-3 -7,-3z"/>
+            <!-- Head -->
+            <path
+                android:fillColor="#FDB377"
+                android:pathData="M12,7m-2.5,0a2.5,2.5 0,1 1,5 0a2.5,2.5 0,1 1,-5 0"/>
+            <!-- Body with overall straps -->
+            <path
+                android:fillColor="#4169E1"
+                android:pathData="M8,9.5h8v7H8z"/>
+            <path
+                android:fillColor="#1E90FF"
+                android:pathData="M9,9.5v7h1v-7H9zM14,9.5v7h1v-7h-1z"/>
+            <!-- Rice plant in hands -->
+            <path
+                android:fillColor="#228B22"
+                android:pathData="M7,14c2,-2 4,2 5,2.5c1,-0.5 3,-4.5 5,-2.5c-2,3 -4,3 -5,3c-1,0 -3,0 -5,-3z"/>
+        </vector>
+    </item>
+</selector>
