@@ -1,7 +1,6 @@
 package com.example.harvestflow.millmanagement;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -16,11 +15,11 @@ import com.example.harvestflow.Database.RiceMillDatabaseHelper;
 import com.example.harvestflow.Database.RiceTypeDatabaseHelper;
 import com.example.harvestflow.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class SendToMillsActivity extends AppCompatActivity {
-    private static final String TAG = "SendToMillsActivity";
     private String username;
     private AutoCompleteTextView spinnerMill, spinnerRiceType;
     private EditText etQuantity;
@@ -30,39 +29,45 @@ public class SendToMillsActivity extends AppCompatActivity {
     private RiceTypeDatabaseHelper riceTypeDb;
     private ApprovedQuantitiesDatabaseHelper approvedQuantitiesDb;
 
-    private List<HashMap<String, String>> riceMills;
-    private List<HashMap<String, String>> riceTypes;
+    private List<HashMap<String, String>> riceMills = new ArrayList<>();
+    private List<HashMap<String, String>> riceTypes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_to_mills);
 
-        // Get username from intent
+        // Initialize views and database
+        initializeViews();
+        setupToolbar();
         username = getIntent().getStringExtra("username");
+
         if (username == null || username.isEmpty()) {
-            Toast.makeText(this, "Error: Username not provided", Toast.LENGTH_LONG).show();
-            finish();
+            showError("Username not provided");
             return;
         }
 
         initializeDatabases();
-        setupToolbar();
-        initializeViews();
+
+        if (!loadDatabaseData()) {
+            showError("Failed to load data from the database");
+            return;
+        }
+
         setupDropdowns();
         setupSendButton();
     }
 
-    private void initializeDatabases() {
-        try {
-            riceMillDb = new RiceMillDatabaseHelper(this);
-            riceTypeDb = new RiceTypeDatabaseHelper(this);
-            approvedQuantitiesDb = new ApprovedQuantitiesDatabaseHelper(this);
-        } catch (Exception e) {
-            Log.e(TAG, "Error initializing databases: " + e.getMessage());
-            Toast.makeText(this, "Error initializing databases", Toast.LENGTH_LONG).show();
-            finish();
-        }
+    private void showError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    private void initializeViews() {
+        spinnerMill = findViewById(R.id.spinner_mill);
+        spinnerRiceType = findViewById(R.id.spinner_rice_type);
+        etQuantity = findViewById(R.id.et_quantity);
+        btnSend = findViewById(R.id.btn_send);
     }
 
     private void setupToolbar() {
@@ -74,64 +79,37 @@ public class SendToMillsActivity extends AppCompatActivity {
         }
     }
 
-    private void initializeViews() {
-        spinnerMill = findViewById(R.id.spinner_mill);
-        spinnerRiceType = findViewById(R.id.spinner_rice_type);
-        etQuantity = findViewById(R.id.et_quantity);
-        btnSend = findViewById(R.id.btn_send);
+    private void initializeDatabases() {
+        riceMillDb = new RiceMillDatabaseHelper(this);
+        riceTypeDb = new RiceTypeDatabaseHelper(this);
+        approvedQuantitiesDb = new ApprovedQuantitiesDatabaseHelper(this);
+    }
 
-        spinnerMill.setFocusable(false);
-        spinnerRiceType.setFocusable(false);
+    private boolean loadDatabaseData() {
+        try {
+            riceMills = riceMillDb.getAllRiceMills();
+            riceTypes = riceTypeDb.getAllRiceTypes();
+        } catch (Exception e) {
+            return false; // Return false if there's a database conflict or failure
+        }
+
+        return !riceMills.isEmpty() && !riceTypes.isEmpty();
     }
 
     private void setupDropdowns() {
-        try {
-            // Get data from databases
-            riceMills = riceMillDb.getAllRiceMills();
-            riceTypes = riceTypeDb.getAllRiceTypes();
-
-            if (riceMills.isEmpty()) {
-                Toast.makeText(this, "No mills available", Toast.LENGTH_LONG).show();
-                finish();
-                return;
-            }
-
-            if (riceTypes.isEmpty()) {
-                Toast.makeText(this, "No rice types available", Toast.LENGTH_LONG).show();
-                finish();
-                return;
-            }
-
-            // Setup mill spinner
-            String[] millNames = new String[riceMills.size()];
-            for (int i = 0; i < riceMills.size(); i++) {
-                millNames[i] = riceMills.get(i).get("name");
-            }
-            ArrayAdapter<String> millAdapter = new ArrayAdapter<>(
-                    this,
-                    android.R.layout.simple_dropdown_item_1line,
-                    millNames);
-            spinnerMill.setAdapter(millAdapter);
-
-            // Setup rice type spinner
-            String[] riceTypeNames = new String[riceTypes.size()];
-            for (int i = 0; i < riceTypes.size(); i++) {
-                riceTypeNames[i] = riceTypes.get(i).get("name");
-            }
-            ArrayAdapter<String> riceTypeAdapter = new ArrayAdapter<>(
-                    this,
-                    android.R.layout.simple_dropdown_item_1line,
-                    riceTypeNames);
-            spinnerRiceType.setAdapter(riceTypeAdapter);
-
-            // Enable dropdown functionality
-            spinnerMill.setOnClickListener(v -> spinnerMill.showDropDown());
-            spinnerRiceType.setOnClickListener(v -> spinnerRiceType.showDropDown());
-        } catch (Exception e) {
-            Log.e(TAG, "Error setting up dropdowns: " + e.getMessage());
-            Toast.makeText(this, "Error loading data", Toast.LENGTH_LONG).show();
-            finish();
+        List<String> millNames = new ArrayList<>();
+        for (HashMap<String, String> mill : riceMills) {
+            millNames.add(mill.get("name"));
         }
+        ArrayAdapter<String> millAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, millNames);
+        spinnerMill.setAdapter(millAdapter);
+
+        List<String> riceTypeNames = new ArrayList<>();
+        for (HashMap<String, String> riceType : riceTypes) {
+            riceTypeNames.add(riceType.get("name"));
+        }
+        ArrayAdapter<String> riceTypeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, riceTypeNames);
+        spinnerRiceType.setAdapter(riceTypeAdapter);
     }
 
     private boolean validateInputs() {
@@ -139,77 +117,22 @@ public class SendToMillsActivity extends AppCompatActivity {
         String selectedRiceType = spinnerRiceType.getText().toString();
         String quantityStr = etQuantity.getText().toString();
 
-        if (selectedMill.isEmpty()) {
-            spinnerMill.setError("Please select a mill");
-            return false;
-        }
-
-        if (selectedRiceType.isEmpty()) {
-            spinnerRiceType.setError("Please select a rice type");
-            return false;
-        }
-
-        if (quantityStr.isEmpty()) {
-            etQuantity.setError("Please enter quantity");
+        if (selectedMill.isEmpty() || selectedRiceType.isEmpty() || quantityStr.isEmpty()) {
+            Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         try {
             double quantity = Double.parseDouble(quantityStr);
             if (quantity <= 0) {
-                etQuantity.setError("Quantity must be greater than 0");
+                Toast.makeText(this, "Quantity must be greater than 0", Toast.LENGTH_SHORT).show();
                 return false;
             }
         } catch (NumberFormatException e) {
-            etQuantity.setError("Invalid quantity format");
+            Toast.makeText(this, "Invalid quantity", Toast.LENGTH_SHORT).show();
             return false;
         }
-
         return true;
-    }
-
-    private void sendToMill() {
-        try {
-            // Get selected mill ID
-            int millId = -1;
-            String selectedMill = spinnerMill.getText().toString();
-            for (HashMap<String, String> mill : riceMills) {
-                if (mill.get("name").equals(selectedMill)) {
-                    millId = Integer.parseInt(mill.get("id"));
-                    break;
-                }
-            }
-
-            // Get selected rice type ID
-            int riceTypeId = -1;
-            String selectedRiceType = spinnerRiceType.getText().toString();
-            for (HashMap<String, String> riceType : riceTypes) {
-                if (riceType.get("name").equals(selectedRiceType)) {
-                    riceTypeId = Integer.parseInt(riceType.get("id"));
-                    break;
-                }
-            }
-
-            double quantity = Double.parseDouble(etQuantity.getText().toString());
-
-            // Save to database
-            boolean success = approvedQuantitiesDb.addApprovedQuantity(
-                    millId, riceTypeId, quantity, username);
-
-            if (success) {
-                // Clear all fields
-                spinnerMill.setText("");
-                spinnerRiceType.setText("");
-                etQuantity.setText("");
-
-                // Show success message
-                Toast.makeText(this, "Rice quantity successfully sent to mill!", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Rice quantity successfully sent to mill", Toast.LENGTH_SHORT).show();
-            }
-        } catch (Exception e) {
-            Toast.makeText(this, "Error processing request. Please try again.", Toast.LENGTH_SHORT).show();
-        }
     }
 
     private void setupSendButton() {
@@ -218,6 +141,52 @@ public class SendToMillsActivity extends AppCompatActivity {
                 sendToMill();
             }
         });
+    }
+
+    private void sendToMill() {
+        String millId = getSelectedMillId();
+        String riceTypeId = getSelectedRiceTypeId();
+
+        if (millId == null || riceTypeId == null) {
+            Toast.makeText(this, "Invalid selection", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        double quantity = Double.parseDouble(etQuantity.getText().toString());
+        boolean success = approvedQuantitiesDb.addApprovedQuantity(
+                Integer.parseInt(millId),
+                Integer.parseInt(riceTypeId),
+                quantity,
+                username);
+
+        if (success) {
+            spinnerMill.setText("");
+            spinnerRiceType.setText("");
+            etQuantity.setText("");
+            Toast.makeText(this, "Successfully sent to mill!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Failed to send to mill", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String getSelectedMillId() {
+        String selectedMill = spinnerMill.getText().toString();
+        for (HashMap<String, String> mill : riceMills) {
+            if (selectedMill.equals(mill.get("name"))) {
+                return mill.get("id");
+            }
+        }
+        return null;
+    }
+
+    private String getSelectedRiceTypeId() {
+        String selectedRiceType = spinnerRiceType.getText().toString();
+        for (HashMap<String, String> riceType : riceTypes) {
+            if (selectedRiceType.equals(riceType.get("name"))) {
+                return riceType.get("id");
+            }
+        }
+        return null;
     }
 
     @Override

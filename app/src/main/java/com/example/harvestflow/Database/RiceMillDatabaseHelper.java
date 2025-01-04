@@ -13,8 +13,8 @@ import java.util.List;
 
 public class RiceMillDatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "RiceMillDatabaseHelper";
-    private static final String DATABASE_NAME = "harvest_db.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final String DATABASE_NAME = "ricemills_db.db";
+    private static final int DATABASE_VERSION = 2;
 
     // Table and column names
     private static final String TABLE_RICE_MILLS = "rice_mills";
@@ -30,21 +30,17 @@ public class RiceMillDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        createRiceMillsTable(db);
-    }
-
-    private void createRiceMillsTable(SQLiteDatabase db) {
         try {
-            String CREATE_RICE_MILLS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_RICE_MILLS + "("
+            String CREATE_RICE_MILLS_TABLE = "CREATE TABLE " + TABLE_RICE_MILLS + "("
                     + MILL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + MILL_NAME + " TEXT NOT NULL, "
                     + MILL_LOCATION + " TEXT NOT NULL, "
                     + OWNER_CONTACT + " TEXT NOT NULL, "
                     + BUSINESS_REG_ID + " TEXT NOT NULL UNIQUE)";
             db.execSQL(CREATE_RICE_MILLS_TABLE);
-            Log.d(TAG, "Rice mills table created successfully");
+            Log.d(TAG, "Database tables created successfully");
         } catch (Exception e) {
-            Log.e(TAG, "Error creating rice mills table: " + e.getMessage());
+            Log.e(TAG, "Error creating database tables: " + e.getMessage());
         }
     }
 
@@ -52,9 +48,8 @@ public class RiceMillDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         try {
             Log.d(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion);
-            // Only drop and recreate the rice_mills table
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_RICE_MILLS);
-            createRiceMillsTable(db);
+            onCreate(db);
         } catch (Exception e) {
             Log.e(TAG, "Error upgrading database: " + e.getMessage());
         }
@@ -70,7 +65,7 @@ public class RiceMillDatabaseHelper extends SQLiteOpenHelper {
                     BUSINESS_REG_ID + "=?",
                     new String[]{regId},
                     null, null, null);
-            return cursor != null && cursor.getCount() > 0;
+            return cursor.getCount() > 0;
         } catch (Exception e) {
             Log.e(TAG, "Error checking business registration ID: " + e.getMessage());
             return false;
@@ -83,47 +78,28 @@ public class RiceMillDatabaseHelper extends SQLiteOpenHelper {
 
     // Add a new rice mill
     public boolean addRiceMill(String name, String location, String contact, String regId) {
+        if (isBusinessRegIdExists(regId)) {
+            Log.d(TAG, "Business registration ID already exists: " + regId);
+            return false;
+        }
+
         SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
 
         try {
-            // First verification: Direct SQL query
-            String query = "SELECT COUNT(*) FROM " + TABLE_RICE_MILLS +
-                    " WHERE " + BUSINESS_REG_ID + " = ?";
-            Cursor cursor = db.rawQuery(query, new String[]{regId});
-
-            if (cursor != null && cursor.moveToFirst()) {
-                int count = cursor.getInt(0);
-                cursor.close();
-
-                if (count > 0) {
-                    Log.d(TAG, "Business registration ID already exists (SQL check): " + regId);
-                    return false;
-                }
-            }
-
-            // If we get here, the regId doesn't exist, so add the new mill
-            ContentValues values = new ContentValues();
             values.put(MILL_NAME, name);
             values.put(MILL_LOCATION, location);
             values.put(OWNER_CONTACT, contact);
             values.put(BUSINESS_REG_ID, regId);
 
-            // Use transaction to ensure data consistency
-            db.beginTransaction();
-            try {
-                long result = db.insertOrThrow(TABLE_RICE_MILLS, null, values);
-                if (result != -1) {
-                    db.setTransactionSuccessful();
-                    Log.d(TAG, "Successfully added rice mill: " + name);
-                    return true;
-                } else {
-                    Log.e(TAG, "Failed to add rice mill: " + name);
-                    return false;
-                }
-            } finally {
-                db.endTransaction();
+            long result = db.insert(TABLE_RICE_MILLS, null, values);
+            if (result != -1) {
+                Log.d(TAG, "Successfully added rice mill: " + name);
+                return true;
+            } else {
+                Log.e(TAG, "Failed to add rice mill: " + name);
+                return false;
             }
-
         } catch (Exception e) {
             Log.e(TAG, "Error adding rice mill: " + e.getMessage());
             return false;
@@ -224,18 +200,19 @@ public class RiceMillDatabaseHelper extends SQLiteOpenHelper {
     public boolean updateRiceMill(String id, String name, String location, String contact, String regId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        Cursor cursor = null;
 
         try {
             // Check if new regId already exists for a different mill
-            cursor = db.query(TABLE_RICE_MILLS, new String[]{MILL_ID},
+            Cursor cursor = db.query(TABLE_RICE_MILLS, new String[]{MILL_ID},
                     BUSINESS_REG_ID + "=? AND " + MILL_ID + "!=?",
                     new String[]{regId, id}, null, null, null);
 
             if (cursor.getCount() > 0) {
+                cursor.close();
                 Log.d(TAG, "Business registration ID already exists for different mill: " + regId);
                 return false;
             }
+            cursor.close();
 
             values.put(MILL_NAME, name);
             values.put(MILL_LOCATION, location);
@@ -255,10 +232,6 @@ public class RiceMillDatabaseHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             Log.e(TAG, "Error updating rice mill: " + e.getMessage());
             return false;
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
         }
     }
 
@@ -279,16 +252,6 @@ public class RiceMillDatabaseHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             Log.e(TAG, "Error deleting rice mill: " + e.getMessage());
             return false;
-        }
-    }
-    // clean database
-    public void cleanDatabase() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        try {
-            db.delete(TABLE_RICE_MILLS, null, null);
-            Log.d(TAG, "Database cleaned successfully");
-        } catch (Exception e) {
-            Log.e(TAG, "Error cleaning database: " + e.getMessage());
         }
     }
 
