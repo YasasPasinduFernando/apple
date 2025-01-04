@@ -37,11 +37,19 @@ public class RiceMillManagementActivity extends AppCompatActivity {
                 String businessRegId = regId.getText().toString().trim().toUpperCase();
 
                 try {
+                    // Add additional verification before adding
+                    if (dbHelper.isBusinessRegIdExists(businessRegId)) {
+                        Toast.makeText(this, "Business Registration ID already exists", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
                     if (dbHelper.addRiceMill(millName, millLocation, ownerContact, businessRegId)) {
                         Toast.makeText(this, "Rice Mill Added Successfully", Toast.LENGTH_SHORT).show();
                         clearFields(name, location, contact, regId);
                     } else {
-                        Toast.makeText(this, "Business Registration ID already exists", Toast.LENGTH_LONG).show();
+                        // If you want to reset the database when having persistent issues
+                        // dbHelper.cleanDatabase();  // Uncomment this line temporarily if needed
+                        Toast.makeText(this, "Error: Could not add rice mill. Please try again.", Toast.LENGTH_LONG).show();
                     }
                 } catch (Exception e) {
                     Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
