@@ -163,22 +163,99 @@ public class ReportsActivity extends AppCompatActivity {
     }
 
     private void updateChart() {
-        // Simulate sample data instead of querying the database
+        String selectedFarmer = spinnerFarmer.getSelectedItem().toString();
+        String selectedRiceType = spinnerRiceType.getSelectedItem().toString();
+
+        SQLiteDatabase db = quantityDb.getReadableDatabase();
         List<BarEntry> entries = new ArrayList<>();
         List<String> labels = new ArrayList<>();
 
-        // Hardcoded sample data
-        entries.add(new BarEntry(0, 120f)); // Entry 1: Farmer A, Rice Type 1
-        labels.add("Farmer A\nRice Type 1");
+        // Build the query based on selections
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append("SELECT q.net_weight, f.name as farmer_name, r.name as rice_type ")
+                .append("FROM quantities q ")
+                .append("JOIN farmers f ON q.farmer_id = f.id ")
+                .append("JOIN rice_types r ON q.rice_type_id = r.id ");
 
-        entries.add(new BarEntry(1, 200f)); // Entry 2: Farmer B, Rice Type 2
-        labels.add("Farmer B\nRice Type 2");
+        List<String> whereConditions = new ArrayList<>();
+        List<String> whereArgs = new ArrayList<>();
 
-        entries.add(new BarEntry(2, 150f)); // Entry 3: Farmer C, Rice Type 3
-        labels.add("Farmer C\nRice Type 3");
+        // Add conditions based on selections
+        if (!selectedFarmer.equals("All Farmers")) {
+            // Extract farmer name from formatted string (e.g., "John Doe (Location)")
+            String farmerName = selectedFarmer.substring(0, selectedFarmer.indexOf(" ("));
+            whereConditions.add("f.name = ?");
+            whereArgs.add(farmerName);
+        }
 
-        // Update the chart with hardcoded data
-        updateChartWithSampleData(entries, labels);
+        if (!selectedRiceType.equals("All Rice Types")) {
+            // Extract rice type name from formatted string (e.g., "Jasmine (Long Grain)")
+            String riceTypeName = selectedRiceType.substring(0, selectedRiceType.indexOf(" ("));
+            whereConditions.add("r.name = ?");
+            whereArgs.add(riceTypeName);
+        }
+
+        // Add WHERE clause if conditions exist
+        if (!whereConditions.isEmpty()) {
+            queryBuilder.append(" WHERE ").append(String.join(" AND ", whereConditions));
+        }
+
+        queryBuilder.append(" ORDER BY q.created_at DESC LIMIT 10");
+
+        try {
+            Cursor cursor = db.rawQuery(queryBuilder.toString(), whereArgs.toArray(new String[0]));
+            int index = 0;
+
+            if (cursor.moveToFirst()) {
+                do {
+                    float netWeight = cursor.getFloat(cursor.getColumnIndexOrThrow("net_weight"));
+                    String farmerName = cursor.getString(cursor.getColumnIndexOrThrow("farmer_name"));
+                    String riceType = cursor.getString(cursor.getColumnIndexOrThrow("rice_type"));
+
+                    entries.add(new BarEntry(index, netWeight));
+                    labels.add(farmerName + "\n" + riceType);
+                    index++;
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+
+            if (entries.isEmpty()) {
+                barChart.setNoDataText("No data available for selected criteria");
+                barChart.invalidate();
+                return;
+            }
+
+            // Create and configure the dataset
+            BarDataSet dataSet = new BarDataSet(entries, "Net Weight (kg)");
+            dataSet.setColor(CHART_BAR_COLOR);
+            dataSet.setValueTextColor(CHART_TEXT_COLOR);
+            dataSet.setValueTextSize(10f);
+
+            // Configure the data
+            BarData data = new BarData(dataSet);
+            data.setBarWidth(BAR_WIDTH);
+
+            // Configure X-axis labels
+            XAxis xAxis = barChart.getXAxis();
+            xAxis.setValueFormatter(new ValueFormatter() {
+                @Override
+                public String getFormattedValue(float value) {
+                    int i = Math.round(value);
+                    if (i >= 0 && i < labels.size()) {
+                        return labels.get(i);
+                    }
+                    return "";
+                }
+            });
+
+            // Update the chart
+            barChart.setData(data);
+            barChart.invalidate();
+
+        } catch (Exception e) {
+            Log.e("ReportsActivity", "Error updating chart: " + e.getMessage());
+            Toast.makeText(this, "Error updating chart", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void updateChartWithSampleData(List<BarEntry> entries, List<String> labels) {
