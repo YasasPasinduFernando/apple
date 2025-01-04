@@ -163,79 +163,88 @@ public class ReportsActivity extends AppCompatActivity {
     }
 
     private void updateChart() {
-        String selectedFarmer = spinnerFarmer.getSelectedItem().toString();
-        String selectedRiceType = spinnerRiceType.getSelectedItem().toString();
-
-        SQLiteDatabase db = quantityDb.getReadableDatabase();
-        List<BarEntry> entries = new ArrayList<>();
-        List<String> labels = new ArrayList<>();
-
-        // Build the query based on selections
-        StringBuilder queryBuilder = new StringBuilder();
-        queryBuilder.append("SELECT q.net_weight, f.name as farmer_name, r.name as rice_type ")
-                .append("FROM quantities q ")
-                .append("JOIN farmers f ON q.farmer_id = f.id ")
-                .append("JOIN rice_types r ON q.rice_type_id = r.id ");
-
-        List<String> whereConditions = new ArrayList<>();
-        List<String> whereArgs = new ArrayList<>();
-
-        // Add conditions based on selections
-        if (!selectedFarmer.equals("All Farmers")) {
-            // Extract farmer name from formatted string (e.g., "John Doe (Location)")
-            String farmerName = selectedFarmer.substring(0, selectedFarmer.indexOf(" ("));
-            whereConditions.add("f.name = ?");
-            whereArgs.add(farmerName);
-        }
-
-        if (!selectedRiceType.equals("All Rice Types")) {
-            // Extract rice type name from formatted string (e.g., "Jasmine (Long Grain)")
-            String riceTypeName = selectedRiceType.substring(0, selectedRiceType.indexOf(" ("));
-            whereConditions.add("r.name = ?");
-            whereArgs.add(riceTypeName);
-        }
-
-        // Add WHERE clause if conditions exist
-        if (!whereConditions.isEmpty()) {
-            queryBuilder.append(" WHERE ").append(String.join(" AND ", whereConditions));
-        }
-
-        queryBuilder.append(" ORDER BY q.created_at DESC LIMIT 10");
-
         try {
-            Cursor cursor = db.rawQuery(queryBuilder.toString(), whereArgs.toArray(new String[0]));
-            int index = 0;
+            SQLiteDatabase quantityDb = this.quantityDb.getReadableDatabase();
+            List<BarEntry> entries = new ArrayList<>();
+            List<String> labels = new ArrayList<>();
+
+            // Get selected values from spinners
+            String selectedFarmer = spinnerFarmer.getSelectedItem().toString();
+            String selectedRiceType = spinnerRiceType.getSelectedItem().toString();
+
+            // Extract base names (without the location/type info)
+            String farmerName = "All Farmers".equals(selectedFarmer) ? null :
+                    selectedFarmer.substring(0, selectedFarmer.indexOf(" (")).trim();
+            String riceTypeName = "All Rice Types".equals(selectedRiceType) ? null :
+                    selectedRiceType.substring(0, selectedRiceType.indexOf(" (")).trim();
+
+            // Start with base query
+            StringBuilder queryBuilder = new StringBuilder();
+            queryBuilder.append("SELECT * FROM quantities");
+
+            List<String> whereConditions = new ArrayList<>();
+            List<String> whereArgs = new ArrayList<>();
+
+            // Add conditions for filtering
+            if (farmerName != null || riceTypeName != null) {
+                queryBuilder.append(" WHERE ");
+
+                if (farmerName != null) {
+                    whereConditions.add("farmer_id IN (SELECT id FROM farmers WHERE name = ?)");
+                    whereArgs.add(farmerName);
+                }
+
+                if (riceTypeName != null) {
+                    whereConditions.add("rice_type_id IN (SELECT id FROM rice_types WHERE name = ?)");
+                    whereArgs.add(riceTypeName);
+                }
+
+                queryBuilder.append(String.join(" AND ", whereConditions));
+            }
+
+            Log.d("ReportsActivity", "Executing query: " + queryBuilder.toString());
+            Log.d("ReportsActivity", "With args: " + String.join(", ", whereArgs));
+
+            Cursor cursor = quantityDb.rawQuery(queryBuilder.toString(),
+                    whereArgs.isEmpty() ? null : whereArgs.toArray(new String[0]));
+
+            Log.d("ReportsActivity", "Query returned " + cursor.getCount() + " rows");
 
             if (cursor.moveToFirst()) {
+                int index = 0;
                 do {
-                    float netWeight = cursor.getFloat(cursor.getColumnIndexOrThrow("net_weight"));
-                    String farmerName = cursor.getString(cursor.getColumnIndexOrThrow("farmer_name"));
-                    String riceType = cursor.getString(cursor.getColumnIndexOrThrow("rice_type"));
+                    float netWeight = cursor.getFloat(cursor.getColumnIndex("net_weight"));
+                    int farmerId = cursor.getInt(cursor.getColumnIndex("farmer_id"));
+                    int riceTypeId = cursor.getInt(cursor.getColumnIndex("rice_type_id"));
+
+                    // Get farmer and rice type details
+                    String farmerInfo = getFarmerName(farmerId);
+                    String riceTypeInfo = getRiceTypeName(riceTypeId);
 
                     entries.add(new BarEntry(index, netWeight));
-                    labels.add(farmerName + "\n" + riceType);
+                    labels.add(farmerInfo + "\n" + riceTypeInfo);
                     index++;
                 } while (cursor.moveToNext());
             }
             cursor.close();
 
             if (entries.isEmpty()) {
-                barChart.setNoDataText("No data available for selected criteria");
+                Log.d("ReportsActivity", "No entries found for selected filters");
+                barChart.setNoDataText("No harvest data available for selected filters");
                 barChart.invalidate();
                 return;
             }
 
-            // Create and configure the dataset
+            // Create dataset
             BarDataSet dataSet = new BarDataSet(entries, "Net Weight (kg)");
             dataSet.setColor(CHART_BAR_COLOR);
             dataSet.setValueTextColor(CHART_TEXT_COLOR);
             dataSet.setValueTextSize(10f);
 
-            // Configure the data
             BarData data = new BarData(dataSet);
             data.setBarWidth(BAR_WIDTH);
 
-            // Configure X-axis labels
+            // Configure X-axis
             XAxis xAxis = barChart.getXAxis();
             xAxis.setValueFormatter(new ValueFormatter() {
                 @Override
@@ -248,14 +257,49 @@ public class ReportsActivity extends AppCompatActivity {
                 }
             });
 
-            // Update the chart
             barChart.setData(data);
             barChart.invalidate();
 
         } catch (Exception e) {
             Log.e("ReportsActivity", "Error updating chart: " + e.getMessage());
-            Toast.makeText(this, "Error updating chart", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    // Update these helper methods to include formatted names
+    private String getFarmerName(int farmerId) {
+        SQLiteDatabase db = farmerDb.getReadableDatabase();
+        String formattedName = "Unknown";
+        Cursor cursor = db.query("farmers",
+                new String[]{"name", "location"},
+                "id = ?",
+                new String[]{String.valueOf(farmerId)},
+                null, null, null);
+        if (cursor.moveToFirst()) {
+            String name = cursor.getString(cursor.getColumnIndex("name"));
+            String location = cursor.getString(cursor.getColumnIndex("location"));
+            formattedName = name + " (" + location + ")";
+        }
+        cursor.close();
+        return formattedName;
+    }
+
+    private String getRiceTypeName(int riceTypeId) {
+        SQLiteDatabase db = riceTypeDb.getReadableDatabase();
+        String formattedName = "Unknown";
+        Cursor cursor = db.query("rice_types",
+                new String[]{"name", "type"},
+                "id = ?",
+                new String[]{String.valueOf(riceTypeId)},
+                null, null, null);
+        if (cursor.moveToFirst()) {
+            String name = cursor.getString(cursor.getColumnIndex("name"));
+            String type = cursor.getString(cursor.getColumnIndex("type"));
+            formattedName = name + " (" + type + ")";
+        }
+        cursor.close();
+        return formattedName;
     }
 
     private void updateChartWithSampleData(List<BarEntry> entries, List<String> labels) {
