@@ -74,6 +74,13 @@
                 android:layout_height="wrap_content"
                 android:text="Send to Mill"
                 android:backgroundTint="#4CAF50"/>
+            <Button
+                android:id="@+id/btn_view_approved"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="View Approved Quantities"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="#4CAF78"/>
 
         </LinearLayout>
 

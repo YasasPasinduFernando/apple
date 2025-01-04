@@ -14,7 +14,7 @@ import java.util.List;
 public class ApprovedQuantitiesDatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "ApprovedQuantitiesDB";
     private static final String DATABASE_NAME = "approved_quantities.db";
-    private static final int DATABASE_VERSION = 2; // Updated version for schema changes
+    private static final int DATABASE_VERSION = 2;
 
     private static final String TABLE_APPROVED_QUANTITIES = "approved_quantities";
     private static final String COLUMN_ID = "id";
@@ -24,8 +24,15 @@ public class ApprovedQuantitiesDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_USERNAME = "username";
     private static final String COLUMN_TIMESTAMP = "timestamp";
 
+    private final Context context;
+    private final RiceMillDatabaseHelper riceMillDbHelper;
+    private final RiceTypeDatabaseHelper riceTypeDbHelper;
+
     public ApprovedQuantitiesDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
+        this.riceMillDbHelper = new RiceMillDatabaseHelper(context);
+        this.riceTypeDbHelper = new RiceTypeDatabaseHelper(context);
     }
 
     @Override
@@ -82,15 +89,15 @@ public class ApprovedQuantitiesDatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Retrieves all approved quantities.
-     *
-     * @return A list of approved quantities with details.
+     * Retrieves all approved quantities with mill names and rice types.
      */
     public List<HashMap<String, String>> getAllApprovedQuantities() {
         List<HashMap<String, String>> approvedQuantities = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT * FROM " + TABLE_APPROVED_QUANTITIES + " ORDER BY " + COLUMN_TIMESTAMP + " DESC";
+        // Get the base approved quantities data
+        String query = "SELECT * FROM " + TABLE_APPROVED_QUANTITIES +
+                " ORDER BY " + COLUMN_TIMESTAMP + " DESC";
 
         Cursor cursor = null;
         try {
@@ -98,12 +105,22 @@ public class ApprovedQuantitiesDatabaseHelper extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 do {
                     HashMap<String, String> quantity = new HashMap<>();
+                    int millId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_MILL_ID));
+                    int riceTypeId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RICE_TYPE_ID));
+
+                    // Get mill name from RiceMillDatabaseHelper
+                    String millName = getMillName(millId);
+
+                    // Get rice type from RiceTypeDatabaseHelper
+                    String riceType = getRiceTypeName(riceTypeId);
+
                     quantity.put("id", cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ID)));
-                    quantity.put("mill_id", cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_MILL_ID)));
-                    quantity.put("rice_type_id", cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_RICE_TYPE_ID)));
+                    quantity.put("mill_name", millName);
+                    quantity.put("rice_type", riceType);
                     quantity.put("quantity", cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_QUANTITY)));
                     quantity.put("username", cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERNAME)));
                     quantity.put("timestamp", cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TIMESTAMP)));
+
                     approvedQuantities.add(quantity);
                 } while (cursor.moveToNext());
             }
@@ -116,6 +133,55 @@ public class ApprovedQuantitiesDatabaseHelper extends SQLiteOpenHelper {
         }
         return approvedQuantities;
     }
+
+    /**
+     * Helper method to get mill name from RiceMillDatabaseHelper
+     */
+    private String getMillName(int millId) {
+        List<HashMap<String, String>> mills = riceMillDbHelper.getAllRiceMills();
+        for (HashMap<String, String> mill : mills) {
+            if (mill.get("id") != null && Integer.parseInt(mill.get("id")) == millId) {
+                return mill.get("name");
+            }
+        }
+        return "Unknown Mill";
+    }
+
+    /**
+     * Helper method to get rice type name from RiceTypeDatabaseHelper
+     */
+    private String getRiceTypeName(int riceTypeId) {
+        List<HashMap<String, String>> riceTypes = riceTypeDbHelper.getAllRiceTypes();
+        for (HashMap<String, String> riceType : riceTypes) {
+            if (riceType.get("id") != null && Integer.parseInt(riceType.get("id")) == riceTypeId) {
+                return riceType.get("name");
+            }
+        }
+        return "Unknown Rice Type";
+    }
+    public double getTotalQuantity() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        double total = 0;
+
+        String query = "SELECT SUM(" + COLUMN_QUANTITY + ") as total FROM " + TABLE_APPROVED_QUANTITIES;
+
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(query, null);
+            if (cursor.moveToFirst()) {
+                total = cursor.getDouble(0);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error calculating total quantity: " + e.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return total;
+    }
+
+
 
     /**
      * Retrieves the total approved quantity for a specific mill.
@@ -145,4 +211,5 @@ public class ApprovedQuantitiesDatabaseHelper extends SQLiteOpenHelper {
         }
         return total;
     }
+
 }
