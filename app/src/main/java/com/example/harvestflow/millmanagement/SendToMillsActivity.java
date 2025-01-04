@@ -1,5 +1,6 @@
 package com.example.harvestflow.millmanagement;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -14,6 +15,7 @@ import com.example.harvestflow.Database.ApprovedQuantitiesDatabaseHelper;
 import com.example.harvestflow.Database.RiceMillDatabaseHelper;
 import com.example.harvestflow.Database.RiceTypeDatabaseHelper;
 import com.example.harvestflow.R;
+import com.example.harvestflow.ViewApprovedQuantitiesActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,6 +58,11 @@ public class SendToMillsActivity extends AppCompatActivity {
 
         setupDropdowns();
         setupSendButton();
+        Button btnViewApproved = findViewById(R.id.btn_view_approved);
+        btnViewApproved.setOnClickListener(v -> {
+            Intent intent = new Intent(SendToMillsActivity.this, ViewApprovedQuantitiesActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void showError(String message) {

@@ -40,6 +40,7 @@
         <activity android:name=".millmanagement.RiceMillManagementActivity" />
         <activity android:name=".millmanagement.SendToMillsActivity" />
         <activity android:name=".millmanagement.RiceMillListActivity" />
+        <activity android:name=".ViewApprovedQuantitiesActivity" />
 
     </application>
 
